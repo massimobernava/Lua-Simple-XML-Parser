@@ -1,5 +1,5 @@
-module(..., package.seeall)
-
+--module(..., package.seeall)
+xmlSimple = {}
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 --
@@ -17,7 +17,7 @@ module(..., package.seeall)
 --
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-function newParser()
+function xmlSimple.newParser()
 
     XmlParser = {};
 
@@ -158,7 +158,7 @@ function newParser()
     return XmlParser
 end
 
-function newNode(name)
+function xmlSimple.newNode(name)
     local node = {}
     node.___value = nil
     node.___name = name
@@ -204,3 +204,5 @@ function newNode(name)
 
     return node
 end
+
+return xmlSimple
