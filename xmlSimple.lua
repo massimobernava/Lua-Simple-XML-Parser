@@ -95,7 +95,7 @@ function xmlSimple.newParser()
 
     function XmlParser:ParseXmlText(xmlText)
         local stack = {}
-        local top = newNode()
+        local top = xmlSimple.newNode()
         table.insert(stack, top)
         local ni, c, label, xarg, empty
         local i, j = 1, 1
@@ -108,11 +108,11 @@ function xmlSimple.newParser()
                 stack[#stack]:setValue(lVal)
             end
             if empty == "/" then -- empty element tag
-                local lNode = newNode(label)
+                local lNode = xmlSimple.newNode(label)
                 self:ParseArgs(lNode, xarg)
                 top:addChild(lNode)
             elseif c == "" then -- start tag
-                local lNode = newNode(label)
+                local lNode = xmlSimple.newNode(label)
                 self:ParseArgs(lNode, xarg)
                 table.insert(stack, lNode)
         top = lNode
@@ -173,12 +173,15 @@ function xmlSimple.newNode(name)
     function node:numChildren() return #self.___children end
     function node:addChild(child)
         if self[child:name()] ~= nil then
-            if type(self[child:name()].name) == "function" then
-                local tempTable = {}
+             if type(self[child:name()]) == "function" then
+                if self["_"..child:name()] == nil then self["_"..child:name()]={} end
+                table.insert(self["_"..child:name()],child)
+            else
+            	local tempTable = {}
                 table.insert(tempTable, self[child:name()])
                 self[child:name()] = tempTable
+                table.insert(self[child:name()], child)
             end
-            table.insert(self[child:name()], child)
         else
             self[child:name()] = child
         end
